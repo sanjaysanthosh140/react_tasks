@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FiBell, FiLogOut, FiMenu, FiX } from "react-icons/fi";
 import "./SharedPages.css";
 
@@ -12,10 +13,11 @@ const tickets = [
 
 export default function SupportHelp() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="dashboard-root">
-      <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+      <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} navigate={navigate} />
       <button className="toggle-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>
         {sidebarOpen ? <FiX /> : <FiMenu />}
       </button>
@@ -62,7 +64,12 @@ export default function SupportHelp() {
   );
 }
 
-function Sidebar({ isOpen, setIsOpen }) {
+function Sidebar({ isOpen, setIsOpen, navigate }) {
+  const handleNavClick = (path) => {
+    navigate(path);
+    setIsOpen(false);
+  };
+
   return (
     <aside className={`sidebar ${isOpen ? "open" : ""}`}>
       <div className="sidebar-top">
@@ -71,16 +78,16 @@ function Sidebar({ isOpen, setIsOpen }) {
           <div className="brand-text">carooa</div>
         </div>
         <nav className="nav">
-          <button className="nav-item">Dashboard</button>
-          <button className="nav-item">Product Management</button>
-          <button className="nav-item">Order Management</button>
-          <button className="nav-item">Returns & Refunds</button>
-          <button className="nav-item">Inventory Management</button>
-          <button className="nav-item">Payments & Earnings</button>
-          <button className="nav-item">Ratings & Reviews</button>
-          <button className="nav-item">Profile & KYC</button>
-          <button className="nav-item active">Support/Help</button>
-          <button className="nav-item">Account Settings</button>
+          <button className="nav-item" onClick={() => handleNavClick('/')}>Dashboard</button>
+          <button className="nav-item" onClick={() => handleNavClick('/product-management')}>Product Management</button>
+          <button className="nav-item" onClick={() => handleNavClick('/order-management')}>Order Management</button>
+          <button className="nav-item" onClick={() => handleNavClick('/returns-refunds')}>Returns & Refunds</button>
+          <button className="nav-item" onClick={() => handleNavClick('/inventory-management')}>Inventory Management</button>
+          <button className="nav-item" onClick={() => handleNavClick('/payments-earnings')}>Payments & Earnings</button>
+          <button className="nav-item" onClick={() => handleNavClick('/ratings-reviews')}>Ratings & Reviews</button>
+          <button className="nav-item" onClick={() => handleNavClick('/profile-kyc')}>Profile & KYC</button>
+          <button className="nav-item active" onClick={() => handleNavClick('/support-help')}>Support/Help</button>
+          <button className="nav-item" onClick={() => handleNavClick('/account-settings')}>Account Settings</button>
         </nav>
       </div>
       <div className="sidebar-bottom">

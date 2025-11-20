@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   LineChart,
   Line,
@@ -55,7 +56,12 @@ const recentOrders = [
   { id: 14, date: "10/7/2025 5:32 PM", status: "cancelled", total: 236.0 },
 ];
 
-function Sidebar({ isOpen, setIsOpen }) {
+function Sidebar({ isOpen, setIsOpen, navigate }) {
+  const handleNavClick = (path) => {
+    navigate(path);
+    setIsOpen(false);
+  };
+
   return (
     <aside className={`sidebar ${isOpen ? "open" : ""}`}>
       <div className="sidebar-top">
@@ -65,19 +71,19 @@ function Sidebar({ isOpen, setIsOpen }) {
         </div>
 
         <nav className="nav">
-          <button className="nav-item active">
+          <button className="nav-item active" onClick={() => handleNavClick('/')}>
             <FaThLarge className="nav-icon" />
             <span>Dashboard</span>
           </button>
-          <button className="nav-item">Product Management</button>
-          <button className="nav-item">Order Management</button>
-          <button className="nav-item">Returns & Refunds</button>
-          <button className="nav-item">Inventory Management</button>
-          <button className="nav-item">Payments & Earnings</button>
-          <button className="nav-item">Ratings & Reviews</button>
-          <button className="nav-item">Profile & KYC</button>
-          <button className="nav-item">Support/Help</button>
-          <button className="nav-item">Account Settings</button>
+          <button className="nav-item" onClick={() => handleNavClick('/product-management')}>Product Management</button>
+          <button className="nav-item" onClick={() => handleNavClick('/order-management')}>Order Management</button>
+          <button className="nav-item" onClick={() => handleNavClick('/returns-refunds')}>Returns & Refunds</button>
+          <button className="nav-item" onClick={() => handleNavClick('/inventory-management')}>Inventory Management</button>
+          <button className="nav-item" onClick={() => handleNavClick('/payments-earnings')}>Payments & Earnings</button>
+          <button className="nav-item" onClick={() => handleNavClick('/ratings-reviews')}>Ratings & Reviews</button>
+          <button className="nav-item" onClick={() => handleNavClick('/profile-kyc')}>Profile & KYC</button>
+          <button className="nav-item" onClick={() => handleNavClick('/support-help')}>Support/Help</button>
+          <button className="nav-item" onClick={() => handleNavClick('/account-settings')}>Account Settings</button>
         </nav>
       </div>
 
@@ -281,10 +287,11 @@ function BottomBlock() {
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="dashboard-root">
-      <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+      <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} navigate={navigate} />
       <button className="toggle-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>
         {sidebarOpen ? <FiX /> : <FiMenu />}
       </button>
